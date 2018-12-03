@@ -1,0 +1,26 @@
+.:
+total 48
+-rw-r--r--  1 884B Aug 24 10:41 000-FILES.TXT
+-rw-r--r--  1 4.9K Aug 24 10:35 000-PROTOCOL.TXT
+-rw-r--r--  1 1.3K Aug 24 10:35 000-README.TXT
+-rw-r--r--  1 782B Aug 24 10:35 000-VERSION.TXT
+drwxr-xr-x 14 476B Aug 24 10:35 FHR-Scripts
+drwxr-xr-x  4 136B Aug 24 10:35 doc
+
+./FHR-Scripts:
+total 96
+-rwxrwxrwx@ 1 6.5K Aug 24 10:35 HR_finder.m
+-rwxrwxrwx@ 1 3.1K Aug 24 10:35 HR_spectrogram.m
+-rw-r--r--@ 1 2.6K Aug 24 10:35 HR_spline.m
+-rwxrwxrwx@ 1 1.6K Aug 24 10:35 beat_accuracy.m
+-rwxrwxrwx@ 1 2.7K Aug 24 10:35 bpm2sines.m
+-rwxrwxrwx@ 1 3.0K Aug 24 10:35 czt_spectrogram.m
+-rwxrwxrwx@ 1 1.7K Aug 24 10:35 find_start_pk.m
+-rwxrwxrwx@ 1 1.2K Aug 24 10:35 optimal_czt.m
+-rw-r--r--@ 1 2.3K Aug 24 10:35 outliers.m
+-rwxrwxrwx@ 1 967B Aug 24 10:35 quad_interpolate.m
+-rwxrwxrwx@ 1 2.6K Aug 24 10:35 spect_peak_picker.m
+
+./doc:
+total 3800
+-rw-r--r--@ 1 1.9M Aug 24 10:35 MT-516.pdf

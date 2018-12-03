@@ -1,0 +1,141 @@
+################################################################################
+#                      FETAL HEART RATE EXTRACTION:  MATLAB                    #
+#------------------------------------------------------------------------------#
+#                        Copyright (c) A. Reinhardt, 2018                      #
+################################################################################
+
+Author: Alec Reinhardt <aereinh@emory.edu>
+Version: 1.0
+Last updated: 23 AUG 2018
+
+
+IMPLEMENTATION PROTOCOL
+
+To use the scripts, run Matlab and change directories to FHR-Scripts.
+For running entire FHR extraction protocol, use the HR_finder command.
+See below for instructions on how to use HR_finder command.
+
+See further down for instructions and information about other commands.
+
+--------------------------------------------------------------------------------
+
+HR_FINDER IMPLEMENTATION:
+
+[FHR,time,FHR_sp,time_sp,outlier_locs] =
+   HR_finder(raw_signal,region_size,spect_window,delta_time,freq_range,fs,
+		cepst_window,HR_range,spline);
+
+
+Below is a description of the parameters for HR_finder. Documentation can
+also be found by typing 'help HR_finder' in the MATLAB command window.
+
+HR_finder parameters:
+
+	  raw_signal - Double array containing electrical output of TOITU
+	  	       Doppler cardiograph
+		       
+	  region_size - Length of time (sec) less than or equal to the total
+	  	        time of raw signal. Specifies how to split up raw signal
+			for faster processing. Input 'all' or '[]' for no split
+
+	  spect_window - Function for windowing raw_signal to generate a
+	  	       	 spectrogram. Window parameters affect accuracy of
+			 results
+
+	  delta_time - Desired spacing of extracted heart rate points (sec)
+
+	  freq_range - Range of frequencies (Hz)  over which spectrogram of
+	  	       raw_signal should be generated. Low frequencies
+		       (i.e. < 50 Hz) may contain the most relevant information
+
+	  fs - Sampling frequency of raw_signal (Hz)
+	  
+	  cepst_window - Function for windowing spectrums of raw_signal to
+	  	         generate time-varying cepstrums. cepst_window size
+			 should be the same as spect_window
+
+	  HR_range - Range of heart rates over which the FHR is extracted (bpm)
+
+	  spline - Gives user option to remove outliers and spline fit FHR.
+	  	   Entering 0 will decline this option. Entering 1 will prompt
+		   user for the following:
+
+		   HR_thresh - [lower,upper] - Cutoff bounds for FHR
+		   nhood - Odd number of indices >=3 which specifies size of
+		   	   local region
+	  	   loc_sd_thresh - Standard deviation cutoff for local regions
+		   spline_res - Relative resolution of spline fit compared to
+		   	        original FHR curve
+
+		   *These parameters can also be inputted in a 5-tuple vector,
+		   spline = [lower,upper,nhood,loc_sd_thresh,spline_res]
+
+
+
+Once FHR is obtained, to remove outliers and spline fit in a separate command,
+type:
+
+   [FHR_sp,time_sp,outlier_locs] = HR_spline(FHR,time,HR_thresh,nhood,
+					      loc_sd_thresh,spline_res);
+
+Results can be plotted by typing the following in the command window:
+	plot(time,FHR)
+	     or
+	plot(time_sp,FHR_sp)
+
+-------------------------------------------------------------------------------
+
+OTHER COMMANDS:
+
+HR_finder makes use of several other scripts to extract FHR. The order that
+they are called is the following:
+
+     1. czt_spectrogram - Finds the chirp z-transform spectrogram of the
+     			  input signal, using a specified window function,
+			  overlap, and frequency range. Spectrogram can
+			  be displayed with mesh command.
+
+     2. HR_spectrogram  - Finds the spectrogram of the spectrogram. Peaks
+     			  indicate values of potential FHR values due to
+			  the presence of periodic harmonics in czt_spectrogram.
+			  Allows for HR_range specification
+
+     3.find_start_pk/   - Finds the values corresponding to top peaks for each
+     spect_peak_picker    spectrum in the HR_spectrogram
+
+     4. outliers        - Identifies global and local outliers in extracted FHR
+     5. HR_spline       - Removes outliers and spline fits FHR based on
+     			  specifications
+
+
+Documentation for all scripts in FHR-Scripts can be obtained by entering the
+following into the MATLAB command window:
+
+	  'help [script_name]'
+
+-------------------------------------------------------------------------------
+
+
+EXAMPLES
+
+1) 
+[FHR,time] = HR_finder(heartsig1,60,kaiser(3*fs,4.5),0.5,[4 40],fs,
+	     		  kaiser(3*fs,0.5),[100 200],0);
+			  
+[FHR_sp,time_sp,outlier_locs] = HR_spline(FHR,time,[120 180],9,5,100);
+
+
+2) 
+[FHR,time,FHR_sp,time_sp,outlier_locs] =
+         HR_finder(heartsig8,40,kaiser(2.5*fs,4),0.25,[5 35],fs,rectwin(2.5*fs),
+	 	    [80 220],[120,180,7,6,100]);
+
+3)
+[z_trans,fz,time] = czt_spectrogram(heartsig2,kaiser(3*fs,3),2.5*fs,[],[5 30],fs);
+[HR_amp,HR] = HR_spectrogram(z_trans,fz,rectwin(3*fs),[100 200]);
+mesh(t,HR,HR_amp)
+view(0,90)
+--------------------------------------------------------------------------------
+
+
+################################################################################

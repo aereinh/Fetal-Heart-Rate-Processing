@@ -1,0 +1,22 @@
+################################################################################
+#                      FETAL HEART RATE EXTRACTION:  MATLAB                    #
+#------------------------------------------------------------------------------#
+#                        Copyright (c) A. Reinhardt, 2018                      #
+################################################################################
+
+VERSION 1.0 : 23 AUG 2018 : Alec Reinhardt <aereinh@emory.edu>
+
+Contact Details:
+
+  Alec Reinhardt
+  Emory University
+  1623 Deerfield Cir
+  Decatur, GA 30033
+  U.S.A.
+
+  E-mail    : aereinh@emory.edu
+  Phone     : +1(404)394-6662
+
+Please send all comments and criticisms to the above address.
+
+################################################################################
